@@ -10,6 +10,7 @@ import "swiper/css/effect-cards";
 import "swiper/swiper-bundle.min.css";
 
 import "./style.css";
+import Loader from './Loader';
 //https://codesandbox.io/p/sandbox/msxyp3?file=%2Fsrc%2FApp.jsx&selection=%5B%7B%22endColumn%22%3A8%2C%22endLineNumber%22%3A33%2C%22startColumn%22%3A1%2C%22startLineNumber%22%3A16%7D%5D
 
 const findAttachmentStyle = (list: Array<Card>, questionaireState: AttachmentStyleTracker) => {
@@ -27,6 +28,7 @@ const findAttachmentStyle = (list: Array<Card>, questionaireState: AttachmentSty
 export default function StackableCards() {
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [questionaire, SetQuestionaire] = useState(Questionaire);
+  const [isLoading, SetIsLoading] = useState(true);
   const [questionaireState, SetQuestionaireState] = useState<AttachmentStyleTracker>({
     anxios: 0,
     avoidant: 0,
@@ -43,6 +45,9 @@ export default function StackableCards() {
 
   const prevSlide = () => {
     swiper?.slidePrev(500);
+    updateQuestionaireState();
+    console.log(swiper?.activeIndex);
+    console.table(questionaireState);
   };
 
   //function to update the questionaire state
@@ -69,16 +74,16 @@ export default function StackableCards() {
           ...prevState,
           avoidant: prevState.avoidant + 1,
         }));
-    console.log("after Update: questionaireState ",questionaireState);
+ //   console.log("after Update: questionaireState ",questionaireState);
   }
 
   useEffect(() => {
     if(questionaireState.secure === 2 || questionaireState.anxios === 2 || questionaireState.avoidant === 2){
       const temp = findAttachmentStyle(questionaire, questionaireState);
       SetQuestionaire(temp);
-      console.log("temp: ",temp)
+     // console.log("temp: ",temp)
     }
-    console.log("questionaireState: ",questionaireState);
+ //   console.log("questionaireState: ",questionaireState);
   },[questionaireState])
 
   return (
@@ -91,9 +96,22 @@ export default function StackableCards() {
         onSwiper={(_swiper)=>{
           console.log(_swiper.activeIndex);
           setSwiper(_swiper);
+          SetIsLoading(false);
         }}
+        onLoad={(_swiper)=>{
+            console.log("starting");
+        }}
+        onAfterInit={(_swiper)=>{
+            console.log("afterInit");
+            SetIsLoading(false);
+        }}
+
+        onBeforeInit={(_swiper)=>{
+            console.log("beforeInit");
+        }}
+        
       >
-        {questionaire.map((card,index) =>
+        {swiper && questionaire.map((card,index) =>
           <SwiperSlide key={index}>
             <div className='card'>
               <header>
@@ -106,11 +124,10 @@ export default function StackableCards() {
           </SwiperSlide>)
         }
       </Swiper>
-      <div className='buttons'>
+     {swiper &&  <div className='buttons'>
           <CircularButton role='img' onClick={prevSlide}>👎</CircularButton>
           <CircularButton role='img' onClick={nextSlide}>👍</CircularButton>
-      </div>
-      {questionaireState.secure === 2 && <h1>Secure</h1>}
+      </div>}
     </StyledCardContainer>
   )
 }
