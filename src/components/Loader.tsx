@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Lottie from 'react-lottie';
 import * as animationData from './loading-circle.json';
 
 
@@ -15,18 +14,18 @@ const LottieContainer = styled.div`
 `;
 
 
-function Loader(): JSX.Element {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-          preserveAspectRatio: 'xMidYMid slice'
-        }
-      };
+// function Loader(): JSX.Element {
+//     const defaultOptions = {
+//         loop: true,
+//         autoplay: true,
+//         animationData: animationData,
+//         rendererSettings: {
+//           preserveAspectRatio: 'xMidYMid slice'
+//         }
+//       };
       
-      return <Lottie options={defaultOptions} />;
+//       return <Lottie options={defaultOptions} />;
       
-}
+// }
 
-export default Loader;
+//export default Loader;

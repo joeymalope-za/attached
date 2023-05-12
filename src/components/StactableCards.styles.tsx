@@ -26,8 +26,6 @@ display: flex;
 justify-content: center;
 align-items: center;
 flex-direction: column;
-width: 360px;
-overflow: hidden;
 
 
 *{

@@ -4,13 +4,13 @@ import ProgressBar from './components/ProgressBar'
 import { AttachmentStyle, Questionaire, Card, Reference, AttachmentStyleTracker } from './types'
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore,{ EffectCards } from "swiper";
+import Image from 'next/image';
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/swiper-bundle.min.css";
 
 import "./style.css";
-import Loader from './Loader';
 //https://codesandbox.io/p/sandbox/msxyp3?file=%2Fsrc%2FApp.jsx&selection=%5B%7B%22endColumn%22%3A8%2C%22endLineNumber%22%3A33%2C%22startColumn%22%3A1%2C%22startLineNumber%22%3A16%7D%5D
 
 const findAttachmentStyle = (list: Array<Card>, questionaireState: AttachmentStyleTracker) => {
@@ -103,13 +103,13 @@ export default function StackableCards() {
         }}
         onAfterInit={(_swiper)=>{
             console.log("afterInit");
-            SetIsLoading(false);
         }}
 
         onBeforeInit={(_swiper)=>{
             console.log("beforeInit");
+            SetIsLoading(false);
+
         }}
-        
       >
         {swiper && questionaire.map((card,index) =>
           <SwiperSlide key={index}>
@@ -128,6 +128,7 @@ export default function StackableCards() {
           <CircularButton role='img' onClick={prevSlide}>👎</CircularButton>
           <CircularButton role='img' onClick={nextSlide}>👍</CircularButton>
       </div>}
+      {isLoading && <Image src="/assets/gooeyLoader.gif" alt="loading" width={100} height={100} />}
     </StyledCardContainer>
   )
 }
